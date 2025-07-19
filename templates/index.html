@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Configuración – Prueba de Flancos</title>
+</head>
+<body>
+  <h1>Configura tu prueba de flancos</h1>
+    <form method="post" action="/">
+    <label>ID participante: <input name="subj" required></label><br>
+    <label>Edad: <input name="edad" required></label><br>
+    <label>Sexo (M/F/O): <input name="sexo" required></label><br>
+    <label>Ensayos práctica: <input type="number" name="practice" value="20"></label><br>
+    <label>Bloques exp.: <input type="number" name="blocks" value="3"></label><br>
+    <label>Ensayos/bloque: <input type="number" name="trials" value="60"></label><br>
+    <label>Deadline (ms): <input type="number" name="deadline" value="2000"></label><br>
+    <label>Fijación (ms): <input type="number" name="fixation" value="500"></label><br>
+    <label>Min RT (ms): <input type="number" name="minrt" value="150"></label><br>
+    <label>Max RT (ms): <input type="number" name="maxrt" value="2000"></label><br>
+    <label>ITI (s): <input type="number" step="0.1" name="iti" value="1.0"></label><br>
+    <label>Jitter (s): <input type="number" step="0.1" name="jitter" value="0.3"></label><br>
+    <label>Pausas cada N: <input type="number" name="breaks" value="20"></label><br>
+    <button type="submit">Iniciar prueba</button>
+  </form>
+</body>
+</html>

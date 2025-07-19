@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Prueba de Flancos</title>
+  <!-- Exponemos la configuración en window.cfg -->
+  <script>
+    /* eslint-disable no-undef */
+
+    window.cfg = {{ config|tojson }};
+    /* eslint-enable no-undef */
+
+  </script>
+  <script src="{{ url_for('static', filename='js/task.js') }}" defer></script>
+  <style>
+    body { font-size: 2rem; text-align: center; margin-top: 5%; }
+    #display { margin: 2rem; }
+  </style>
+</head>
+<body>
+  <div id="display">Preparando...</div>
+</body>
+</html>
