@@ -51,13 +51,25 @@ async function run() {
       // Captura respuesta con deadline
       const t0 = performance.now();
       let resp = '';
-      function handler(e) {
-        const k = e.key.toUpperCase();
-        if (['F','E','Q'].includes(k)) {
-          resp = k;
-          document.removeEventListener('keydown', handler);
+      // reemplaza este fragmento en tu handler
+        function handler(e) {
+        // pulsó flecha derecha?
+        if (e.key === 'ArrowRight') {
+            resp = 'F';            // para tu lógica interna, H = Happy
+            document.removeEventListener('keydown', handler);
         }
-      }
+        // pulsó flecha izquierda?
+        else if (e.key === 'ArrowLeft') {
+            resp = 'E';            // A = Angry
+            document.removeEventListener('keydown', handler);
+        }
+        // salir con Q
+        else if (e.key.toUpperCase() === 'Q') {
+            resp = 'Q';
+            document.removeEventListener('keydown', handler);
+        }
+        }
+
       document.addEventListener('keydown', handler);
       while (performance.now() - t0 < cfg.deadline_ms && resp === '') {
         await wait(1);
