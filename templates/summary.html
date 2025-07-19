@@ -2,11 +2,190 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Resumen – Prueba de Flancos</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>🎉 Resumen – Prueba de Flancos 🚀</title>
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    /* ——— Variables de tema ——— */
+    :root {
+      --gradient-1: #6a11cb;
+      --gradient-2: #2575fc;
+      --card-bg: rgba(255,255,255,0.9);
+      --accent: #ff0080;
+      --text-dark: #2d2d2d;
+    }
+
+    /* ——— Reset básico ——— */
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body, html {
+      width: 100%; height: 100%;
+      overflow: hidden;
+    }
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(-45deg, var(--gradient-1), var(--gradient-2));
+      background-size: 400% 400%;
+      animation: bg-animation 15s ease infinite;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+    }
+
+    @keyframes bg-animation {
+      0%   { background-position: 0% 50%; }
+      50%  { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    /* ——— Confeti de emojis ——— */
+    .emoji-rain {
+      position: absolute;
+      top: -10%;
+      left: 50%;
+      font-size: 1.5rem;
+      opacity: 0.7;
+      animation: drop 5s linear infinite;
+    }
+    @keyframes drop {
+      0%   { transform: translateX(0) translateY(0) rotate(0); }
+      100% { transform: translateX(-200px) translateY(150vh) rotate(720deg); }
+    }
+
+    /* ——— Tarjeta principal ——— */
+    .card {
+      position: relative;
+      background: var(--card-bg);
+      border-radius: 1rem;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+      max-width: 600px;
+      width: 100%;
+      padding: 2rem;
+      backdrop-filter: blur(5px);
+      animation: popIn 0.6s ease-out both;
+    }
+    @keyframes popIn {
+      0%   { opacity: 0; transform: scale(0.85); }
+      100% { opacity: 1; transform: scale(1); }
+    }
+
+    /* ——— Título animado ——— */
+    h1 {
+      text-align: center;
+      font-size: 2.5rem;
+      color: var(--accent);
+      margin-bottom: 1rem;
+      animation: wiggle 2s ease-in-out infinite;
+    }
+    @keyframes wiggle {
+      0%,100% { transform: rotate(-2deg); }
+      50%     { transform: rotate(2deg); }
+    }
+
+    /* ——— Contenedor del resumen ——— */
+    .summary-container {
+      background: #fff;
+      border-radius: 0.75rem;
+      padding: 1.5rem;
+      max-height: 50vh;
+      overflow-y: auto;
+      font-family: 'Courier New', monospace;
+      white-space: pre-wrap;
+      line-height: 1.5;
+      border: 2px dashed var(--accent);
+      animation: fadeIn 1s ease-out both;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ——— Botones llamativos ——— */
+    .actions {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.75rem 1.5rem;
+      font-size: 1rem;
+      font-weight: 600;
+      color: #fff;
+      background: var(--accent);
+      border: none;
+      border-radius: 0.75rem;
+      cursor: pointer;
+      text-decoration: none;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .btn:hover {
+      transform: translateY(-3px) scale(1.05);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+    }
+
+    /* ——— Media queries ——— */
+    @media (max-width: 480px) {
+      h1 { font-size: 2rem; }
+      .summary-container { padding: 1rem; }
+    }
+  </style>
 </head>
 <body>
-  <h1>Resumen Final</h1>
-  <pre>{{ summary }}</pre>
-  <a href="{{ url_for('download_csv') }}">Descargar CSV</a>
+
+  <!-- Algunas gotas de confeti/emojis -->
+  <div class="emoji-rain" style="animation-delay:0s;">🎉</div>
+  <div class="emoji-rain" style="animation-delay:1s;">✨</div>
+  <div class="emoji-rain" style="animation-delay:2s;">🚀</div>
+  <div class="emoji-rain" style="animation-delay:3s;">🎊</div>
+  <div class="emoji-rain" style="animation-delay:4s;">🤩</div>
+
+  <!-- Tarjeta principal -->
+  <div class="card">
+    <h1>🎉 Resumen Final 🎉</h1>
+    <div class="summary-container">
+      <pre id="summary">{{ summary }}</pre>
+    </div>
+    <div class="actions">
+      <button id="copyBtn" class="btn">📋 Copiar resumen</button>
+      <a id="downloadCsv" class="btn" href="{{ url_for('download_csv') }}">📦 Descargar CSV</a>
+    </div>
+  </div>
+
+  <script>
+    // Copiar al portapapeles con confeti rápido 🎊
+    const copyBtn = document.getElementById('copyBtn');
+    copyBtn.addEventListener('click', () => {
+      const text = document.getElementById('summary').innerText;
+      navigator.clipboard.writeText(text)
+        .then(() => {
+          alert('✅ ¡Resumen copiado con éxito!');
+          // Pequeña explosión de confeti
+          for(let i=0; i<20; i++) {
+            const e = document.createElement('div');
+            e.textContent = ['🎉','✨','🚀','🎊','🤩'][Math.floor(Math.random()*5)];
+            e.style.position = 'fixed';
+            e.style.left = (window.innerWidth * Math.random()) + 'px';
+            e.style.top = (window.innerHeight * Math.random()) + 'px';
+            e.style.fontSize = '1.2rem';
+            e.style.opacity = '0.8';
+            document.body.append(e);
+            setTimeout(() => e.remove(), 2000);
+          }
+        })
+        .catch(() => alert('⚠️ Error al copiar el resumen.'));
+    });
+
+    // Confirmación antes de descargar CSV
+    document.getElementById('downloadCsv').addEventListener('click', function(e) {
+      if (!confirm('¿Deseas descargar tu archivo CSV?')) {
+        e.preventDefault();
+      }
+    });
+  </script>
 </body>
 </html>

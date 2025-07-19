@@ -53,7 +53,7 @@ async function run() {
       let resp = '';
       function handler(e) {
         const k = e.key.toUpperCase();
-        if (['I','D','Q'].includes(k)) {
+        if (['F','E','Q'].includes(k)) {
           resp = k;
           document.removeEventListener('keydown', handler);
         }

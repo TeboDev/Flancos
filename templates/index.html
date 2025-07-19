@@ -2,25 +2,234 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Configuración – Prueba de Flancos</title>
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    /*———— Variables de tema ————*/
+    :root {
+      --primary: #5A67D8;
+      --primary-dark: #434190;
+      --gradient-start: #667eea;
+      --gradient-end: #764ba2;
+      --text-light: #F7FAFC;
+      --text-dark: #2D3748;
+      --input-bg: #fff;
+      --input-border: #CBD5E0;
+      --input-focus: #5A67D8;
+      --card-bg: rgba(255, 255, 255, 0.85);
+    }
+    /*———— Reset & Base ————*/
+    *, *::before, *::after { box-sizing: border-box; }
+    body {
+      margin:0;
+      font-family:'Poppins',sans-serif;
+      background:linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      min-height:100vh;
+      padding:1rem;
+      color:var(--text-dark);
+    }
+    /*———— Tarjeta Frosted Glass ————*/
+    .card {
+      background: var(--card-bg);
+      backdrop-filter: blur(10px);
+      border-radius:1rem;
+      box-shadow:0 10px 30px rgba(0,0,0,0.2);
+      max-width:520px;
+      width:100%;
+      padding:2rem;
+      animation:fadeIn 0.6s ease-out both;
+    }
+    @keyframes fadeIn {
+      from { opacity:0; transform:translateY(20px); }
+      to   { opacity:1; transform:translateY(0); }
+    }
+    h1 {
+      margin-bottom:1.5rem;
+      font-size:1.8rem;
+      font-weight:600;
+      color:var(--text-light);
+      text-align:center;
+      text-shadow:0 2px 4px rgba(0,0,0,0.3);
+    }
+    fieldset {
+      border:none;
+      margin-bottom:1.5rem;
+    }
+    legend {
+      font-size:1.1rem;
+      font-weight:500;
+      margin-bottom:0.75rem;
+    }
+    /*———— Grid para inputs ————*/
+    .grid { display:grid; gap:1rem; }
+    .grid-2 { grid-template-columns: repeat(auto-fit, minmax(140px,1fr)); }
+    /*———— Estilo inputs con iconos ————*/
+    .input-wrap { position:relative; }
+    .input-wrap i {
+      position:absolute; top:50%; left:0.75rem;
+      transform:translateY(-50%);
+      color:var(--input-border);
+      transition: color 0.3s;
+    }
+    label {
+      display:block;
+      font-size:0.9rem;
+      margin-bottom:0.3rem;
+    }
+    input[type="text"],
+    input[type="number"] {
+      width:100%;
+      padding:0.75rem 0.75rem 0.75rem 2.5rem;
+      font-size:1rem;
+      border:1px solid var(--input-border);
+      border-radius:0.5rem;
+      background:var(--input-bg);
+      transition:border-color 0.3s, box-shadow 0.3s;
+    }
+    input:focus {
+      border-color:var(--input-focus);
+      box-shadow:0 0 0 3px rgba(90,103,216,0.2);
+      outline:none;
+    }
+    input:focus + i { color:var(--input-focus); }
+    /*———— Botón principal ————*/
+    button {
+      width:100%;
+      padding:0.85rem;
+      font-size:1.1rem;
+      font-weight:500;
+      color:#fff;
+      background:var(--primary);
+      border:none;
+      border-radius:0.5rem;
+      cursor:pointer;
+      transition: background 0.3s, transform 0.2s;
+    }
+    button:hover {
+      background:var(--primary-dark);
+      transform:translateY(-2px);
+    }
+    /*———— Responsive pequeño ————*/
+    @media (max-width:400px) {
+      .card { padding:1.5rem; }
+      h1 { font-size:1.5rem; }
+    }
+  </style>
 </head>
 <body>
-  <h1>Configura tu prueba de flancos</h1>
-    <form method="post" action="/">
-    <label>ID participante: <input name="subj" required></label><br>
-    <label>Edad: <input name="edad" required></label><br>
-    <label>Sexo (M/F/O): <input name="sexo" required></label><br>
-    <label>Ensayos práctica: <input type="number" name="practice" value="20"></label><br>
-    <label>Bloques exp.: <input type="number" name="blocks" value="3"></label><br>
-    <label>Ensayos/bloque: <input type="number" name="trials" value="60"></label><br>
-    <label>Deadline (ms): <input type="number" name="deadline" value="2000"></label><br>
-    <label>Fijación (ms): <input type="number" name="fixation" value="500"></label><br>
-    <label>Min RT (ms): <input type="number" name="minrt" value="150"></label><br>
-    <label>Max RT (ms): <input type="number" name="maxrt" value="2000"></label><br>
-    <label>ITI (s): <input type="number" step="0.1" name="iti" value="1.0"></label><br>
-    <label>Jitter (s): <input type="number" step="0.1" name="jitter" value="0.3"></label><br>
-    <label>Pausas cada N: <input type="number" name="breaks" value="20"></label><br>
+
+  <form id="configForm" class="card" method="post" action="/">
+    <h1>Configura tu prueba de flancos</h1>
+
+    <fieldset>
+      <legend>Datos del participante</legend>
+      <div class="grid grid-2">
+        <div class="input-wrap">
+          <label for="subj">ID participante</label>
+          <input id="subj" type="text" name="subj" required placeholder="Ej. P001">
+          <i class="fas fa-id-badge"></i>
+        </div>
+        <div class="input-wrap">
+          <label for="edad">Edad</label>
+          <input id="edad" type="number" name="edad" required min="1" max="120" placeholder="Ej. 25">
+          <i class="fas fa-calendar-alt"></i>
+        </div>
+        <div class="input-wrap">
+          <label for="sexo">Sexo (M/F/O)</label>
+          <input id="sexo" type="text" name="sexo" required pattern="[MFO]" maxlength="1" placeholder="M, F u O">
+          <i class="fas fa-venus-mars"></i>
+        </div>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Parámetros de ensayos</legend>
+      <div class="grid grid-2">
+        <div class="input-wrap">
+          <label for="practice">Ensayos práctica</label>
+          <input id="practice" type="number" name="practice" required min="0" value="20">
+          <i class="fas fa-play"></i>
+        </div>
+        <div class="input-wrap">
+          <label for="blocks">Bloques exp.</label>
+          <input id="blocks" type="number" name="blocks" required min="1" value="3">
+          <i class="fas fa-th-large"></i>
+        </div>
+        <div class="input-wrap">
+          <label for="trials">Ensayos/bloque</label>
+          <input id="trials" type="number" name="trials" required min="1" value="60">
+          <i class="fas fa-list-ol"></i>
+        </div>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Temporización (ms / s)</legend>
+      <div class="grid grid-2">
+        <div class="input-wrap">
+          <label for="deadline">Deadline (ms)</label>
+          <input id="deadline" type="number" name="deadline" required min="0" value="2000">
+          <i class="fas fa-hourglass-start"></i>
+        </div>
+        <div class="input-wrap">
+          <label for="fixation">Fijación (ms)</label>
+          <input id="fixation" type="number" name="fixation" required min="0" value="500">
+          <i class="fas fa-dot-circle"></i>
+        </div>
+      </div>
+      <div class="grid grid-2">
+        <div class="input-wrap">
+          <label for="minrt">Min RT (ms)</label>
+          <input id="minrt" type="number" name="minrt" required min="0" value="150">
+          <i class="fas fa-angle-double-right"></i>
+        </div>
+        <div class="input-wrap">
+          <label for="maxrt">Max RT (ms)</label>
+          <input id="maxrt" type="number" name="maxrt" required min="0" value="2000">
+          <i class="fas fa-angle-double-left"></i>
+        </div>
+      </div>
+      <div class="grid grid-2">
+        <div class="input-wrap">
+          <label for="iti">ITI (s)</label>
+          <input id="iti" type="number" step="0.1" name="iti" required min="0" value="1.0">
+          <i class="fas fa-clock"></i>
+        </div>
+        <div class="input-wrap">
+          <label for="jitter">Jitter (s)</label>
+          <input id="jitter" type="number" step="0.1" name="jitter" required min="0" value="0.3">
+          <i class="fas fa-random"></i>
+        </div>
+      </div>
+      <div class="input-wrap">
+        <label for="breaks">Pausas cada N</label>
+        <input id="breaks" type="number" name="breaks" required min="0" value="20">
+        <i class="fas fa-pause-circle"></i>
+      </div>
+    </fieldset>
+
     <button type="submit">Iniciar prueba</button>
   </form>
+
+  <!-- Font Awesome -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+  <script>
+    document.getElementById('configForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      if (!this.checkValidity()) {
+        this.reportValidity();
+        return;
+      }
+      if (confirm('¿Estás seguro de iniciar la prueba con estos parámetros?')) {
+        this.submit();
+      }
+    });
+  </script>
+
 </body>
 </html>

@@ -2,22 +2,136 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Prueba de Flancos</title>
-  <!-- Exponemos la configuración en window.cfg -->
-  <script>
-    /* eslint-disable no-undef */
-
-    window.cfg = {{ config|tojson }};
-    /* eslint-enable no-undef */
-
-  </script>
-  <script src="{{ url_for('static', filename='js/task.js') }}" defer></script>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>🎯 Prueba de Flancos – ¡Empieza! 🚀</title>
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <!-- Font Awesome para iconos -->
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
   <style>
-    body { font-size: 2rem; text-align: center; margin-top: 5%; }
-    #display { margin: 2rem; }
+    /*———— Tema ————*/
+    :root {
+      --gradient-a: #ff416c;
+      --gradient-b: #ff4b2b;
+      --card-bg: rgba(255, 255, 255, 0.9);
+      --text-dark: #2d2d2d;
+      --accent: #ff4b2b;
+    }
+
+    /*———— Reset & Base ————*/
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body {
+      width: 100%; height: 100%;
+      overflow: hidden;
+    }
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(-45deg, var(--gradient-a), var(--gradient-b));
+      background-size: 400% 400%;
+      animation: bgShift 15s ease infinite;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    @keyframes bgShift {
+      0%   { background-position: 0% 50%; }
+      50%  { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    /*———— Confeti late ————*/
+    .emoji-drop {
+      position: absolute;
+      top: -5%;
+      font-size: 1.2rem;
+      opacity: 0.8;
+      animation: drop 6s linear infinite;
+    }
+    @keyframes drop {
+      0%   { transform: translateY(0) rotate(0deg); }
+      100% { transform: translateY(110vh) rotate(720deg); }
+    }
+
+    /*———— Tarjeta central ————*/
+    .card {
+      position: relative;
+      background: var(--card-bg);
+      padding: 3rem 2rem;
+      border-radius: 1rem;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+      backdrop-filter: blur(8px);
+      text-align: center;
+      width: 90%;
+      max-width: 500px;
+      animation: popIn 0.5s ease-out both;
+    }
+    @keyframes popIn {
+      from { opacity: 0; transform: scale(0.8); }
+      to   { opacity: 1; transform: scale(1); }
+    }
+
+    /*———— Texto dinámico  ————*/
+    #display {
+      font-size: 2.5rem;
+      color: var(--text-dark);
+      min-height: 3rem;
+      display: inline-block;
+      padding: 0.5rem 1rem;
+      border-radius: 0.5rem;
+      background: #fff;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+      animation: pulse 2s ease infinite;
+    }
+    @keyframes pulse {
+      0%,100% { transform: scale(1); }
+      50%     { transform: scale(1.05); }
+    }
+
+    /*———— Emoji junto al texto ————*/
+    #display::before {
+      content: "👀 ";
+    }
+    #display::after {
+      content: " 🎉";
+    }
   </style>
 </head>
 <body>
-  <div id="display">Preparando...</div>
+
+  <!-- Lluvia de emojis aleatoria -->
+  <div class="emoji-drop" style="left:20%; animation-delay:1s;">✨</div>
+  <div class="emoji-drop" style="left:40%; animation-delay:3s;">🚀</div>
+  <div class="emoji-drop" style="left:60%; animation-delay:2s;">🎊</div>
+  <div class="emoji-drop" style="left:80%; animation-delay:4s;">🤩</div>
+
+  <!-- Tarjeta con display -->
+  <div class="card">
+    <div id="display">Preparando...</div>
+  </div>
+
+  <!-- Exponemos la configuración en window.cfg -->
+  <script>
+    /* eslint-disable no-undef */
+    window.cfg = {{ config|tojson }};
+    /* eslint-enable no-undef */
+  </script>
+  <!-- Lógica de la tarea -->
+  <script src="{{ url_for('static', filename='js/task.js') }}" defer></script>
+  
+  <!-- Confeti al iniciar -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Pequeña explosión de confeti emojis al cargar
+      for(let i=0; i<15; i++){
+        const e = document.createElement('div');
+        e.textContent = ['✨','🎉','🎊','🚀','🤩'][Math.floor(Math.random()*5)];
+        e.className = 'emoji-drop';
+        e.style.left = (Math.random()*100) + '%';
+        e.style.animationDelay = (Math.random()*3) + 's';
+        document.body.appendChild(e);
+        setTimeout(() => e.remove(), 7000);
+      }
+    });
+  </script>
 </body>
 </html>
